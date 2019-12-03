@@ -17,15 +17,23 @@ def connect():
         # create a cursor
         cur = conn.cursor()
 
-        # execute query
-        cur.execute("SELECT * from cards LIMIT 10")
-        
+        # Dataset 1
+        dataset1 = """SELECT a.card_number, a.card_family, SUM(b.value), COUNT(b.id)
+             FROM
+                cards as a
+              LEFT JOIN transactions as b ON a.card_number=b.card_number
+              GROUP BY a.card_number, a.card_family;"""
+
+        # Execute query
+        cur.execute(dataset1)
+
+        # Fetch query result
         rows = cur.fetchall()
 
-        print ("\nShow me the databases: \n")
+        # For now, print rows
         for row in rows:
-            print (row[0])
-                
+            print(row)
+
         # close the communication with the PostgreSQL
         cur.close()
     except (Exception, psycopg2.DatabaseError) as error:
