@@ -14,7 +14,6 @@ def connect():
         params = config()
 
         # connect to the PostgreSQL server
-        print("Connecting to the PostgreSQL database...")
         conn = psycopg2.connect(**params)
 
         # create a cursor
@@ -49,8 +48,6 @@ def connect():
     finally:
         if conn is not None:
             conn.close()
-            print("Database connection closed.")
-
 
 if __name__ == "__main__":
     connect()
