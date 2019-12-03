@@ -1,5 +1,8 @@
 #!/usr/bin/python
+import csv
+
 import psycopg2
+
 from config import config
 
 
@@ -30,9 +33,14 @@ def connect():
         # Fetch query result
         rows = cur.fetchall()
 
-        # For now, print rows
-        for row in rows:
-            print(row)
+        with open("dataset1.csv", "w") as csvfile:
+            writer = csv.writer(
+                csvfile, delimiter=",", quotechar="|", quoting=csv.QUOTE_MINIMAL
+            )
+            writer.writerow(["card_number", "card_family", "value", "transactions"])
+
+            for row in rows:
+                writer.writerow(row)
 
         # close the communication with the PostgreSQL
         cur.close()
