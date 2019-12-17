@@ -11,3 +11,9 @@ https://github.com/pypa/pipenv#installation
 ```make
 make pipenv-setup
 ```
+
+
+## Proximos passos
+
+- [ ] Criar dois endpoints para consulta das querys
+- [ ] Aceitar query como post e retornar json
