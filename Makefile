@@ -1,11 +1,7 @@
 .PHONY: pipenv-setup
 pipenv-setup:
-	pipenv install
+	pipenv install -d
 
-.PHONY: pipenv-active
-pipenv-active:
-	pipenv shell
-
-.PHONY: pipenv-run
-pipenv-run:
-	pipenv run .
+.PHONY: run
+run:
+	pipenv run python app.py
