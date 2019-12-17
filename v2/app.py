@@ -1,10 +1,10 @@
 #!/usr/bin/python
-import csv
 
 import pandas as pd
 import psycopg2
 
 from config import config
+
 
 def main():
     """ Connect to the PostgreSQL database server """
@@ -40,6 +40,7 @@ def main():
     finally:
         if conn is not None:
             conn.close()
+
 
 if __name__ == "__main__":
     main()
