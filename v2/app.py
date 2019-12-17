@@ -11,6 +11,7 @@ engine = create_engine(
 
 def main():
     csv1()
+    csv2()
 
 
 def csv1():
@@ -26,6 +27,27 @@ def csv1():
     df = pd.DataFrame(result)
 
     df.to_csv("dataframe1.csv")
+
+
+def csv2():
+
+    sql = """SELECT a.id as customer_id, a.segment, COUNT(c.card_number) as transactions
+    FROM
+        customers as a
+    LEFT JOIN cards as b ON a.id=b.customer_id
+    LEFT JOIN transactions as c ON b.card_number=c.card_number
+    WHERE a.segment='Diamond'
+    GROUP BY a.id, c.card_number
+    HAVING COUNT(c.card_number) > 40;
+    """
+    result = pd.read_sql_query(sql, engine)
+
+    df = pd.DataFrame(result)
+
+    if df.empty == True:
+        print("Dataframe 2 is empty")
+    else:
+        df.to_csv("dataframe2.csv")
 
 
 if __name__ == "__main__":
