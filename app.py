@@ -1,9 +1,11 @@
 #!/usr/bin/python
 
 import pandas as pd
-
 import sqlalchemy
+from flask import Flask
 from sqlalchemy import create_engine
+
+app = Flask(__name__)
 
 engine = create_engine(
     "postgresql://read_only_user:banking123@db-stone-challenge.cjepwwjnksng.us-east-1.rds.amazonaws.com:5432/postgres"
@@ -26,19 +28,26 @@ sql2 = """SELECT a.id as customer_id, a.segment, COUNT(c.id) as transactions
     HAVING COUNT(c.id) > 40;"""
 
 
-def main():
-    generate_csv(sql1, engine, "df1.csv")
-    generate_csv(sql2, engine, "df2.csv")
+@app.route("/sql1")
+def generate_csv1():
 
-
-def generate_csv(query, conn, csv_file):
-
-    result = pd.read_sql_query(query, conn)
+    result = pd.read_sql_query(sql1, engine)
 
     df = pd.DataFrame(result)
 
-    df.to_csv(csv_file)
+    json = df.to_json(orient="split")
+    return json
 
 
-if __name__ == "__main__":
-    main()
+@app.route("/sql2")
+def generate_csv2():
+
+    result = pd.read_sql_query(sql2, engine)
+
+    df = pd.DataFrame(result)
+
+    json = df.to_json(orient="split")
+    return json
+
+
+app.run()
