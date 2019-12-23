@@ -15,5 +15,5 @@ make pipenv-setup
 
 ## Proximos passos
 
-- [ ] Criar dois endpoints para consulta das querys
+- [x] Criar dois endpoints para consulta das querys
 - [ ] Aceitar query como post e retornar json
