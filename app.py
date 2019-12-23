@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
 import pandas as pd
+
 import sqlalchemy
 from flask import Flask
 from sqlalchemy import create_engine
@@ -28,26 +29,24 @@ sql2 = """SELECT a.id as customer_id, a.segment, COUNT(c.id) as transactions
     HAVING COUNT(c.id) > 40;"""
 
 
-@app.route("/sql1")
-def generate_csv1():
+def generate_csv(query, conn):
 
-    result = pd.read_sql_query(sql1, engine)
+    result = pd.read_sql_query(query, conn)
 
     df = pd.DataFrame(result)
 
     json = df.to_json(orient="split")
     return json
+
+
+@app.route("/sql1")
+def result1():
+    return generate_csv(sql1, engine)
 
 
 @app.route("/sql2")
-def generate_csv2():
-
-    result = pd.read_sql_query(sql2, engine)
-
-    df = pd.DataFrame(result)
-
-    json = df.to_json(orient="split")
-    return json
+def result2():
+    return generate_csv(sql2, engine)
 
 
 app.run()
