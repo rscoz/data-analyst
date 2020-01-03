@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 import pandas as pd
-
+import psycopg2
 import sqlalchemy
 from flask import Flask
 from sqlalchemy import create_engine
@@ -29,7 +29,7 @@ sql2 = """SELECT a.id as customer_id, a.segment, COUNT(c.id) as transactions
     HAVING COUNT(c.id) > 40;"""
 
 
-def generate_csv(query, conn):
+def query(query, conn):
 
     result = pd.read_sql_query(query, conn)
 
@@ -41,12 +41,12 @@ def generate_csv(query, conn):
 
 @app.route("/sql1")
 def result1():
-    return generate_csv(sql1, engine)
+    return query(sql1, engine)
 
 
 @app.route("/sql2")
 def result2():
-    return generate_csv(sql2, engine)
+    return query(sql2, engine)
 
 
 app.run()
