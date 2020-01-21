@@ -4,7 +4,9 @@ import pandas as pd
 import psycopg2
 import sqlalchemy
 from flask import Flask
+from flask import request
 from sqlalchemy import create_engine
+import logging
 
 app = Flask(__name__)
 
@@ -39,14 +41,24 @@ def query(query, conn):
     return json
 
 
-@app.route("/sql1")
-def result1():
-    return query(sql1, engine)
+@app.route("/sql/<int:id>")
+def result1(id):
+    if id == 1:
+        return query(sql1, engine)
+    elif id == 2:
+        return query(sql2, engine)
+    else:
+        logging.error(f"id {id} is not valid")
 
 
-@app.route("/sql2")
-def result2():
-    return query(sql2, engine)
+# @app.route("/sql2")
+# def result2():
+#     return query(sql2, engine)
+
+@app.route("/query", methods=['POST'])
+def execute_query():
+    query_string = request.json["query"]
+    return query(query_string, engine)
 
 
 app.run()
