@@ -49,11 +49,7 @@ def result1(id):
         return query(sql2, engine)
     else:
         logging.error(f"id {id} is not valid")
-
-
-# @app.route("/sql2")
-# def result2():
-#     return query(sql2, engine)
+        
 
 @app.route("/query", methods=['POST'])
 def execute_query():
